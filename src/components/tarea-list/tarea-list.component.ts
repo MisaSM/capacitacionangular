@@ -35,6 +35,7 @@ export class TareaListComponent implements OnInit {
   displayDialog: boolean = false;
   tareaForm!: FormGroup;
   usuarios: any[] = [];
+  isEditing: boolean = false;
 
   constructor(
     private tareaService: TareaService,
@@ -73,45 +74,52 @@ export class TareaListComponent implements OnInit {
 
   openDialog(tarea?: any) {
     this.displayDialog = true;
+    this.isEditing = !!tarea;  // Si tarea existe, se está editando
     if (tarea) {
-      this.tareaForm.patchValue(tarea);
+      this.tareaForm.patchValue({
+        idTarea: tarea.idTarea, // Asignar el ID de la tarea
+        tarea: tarea.tarea,
+        descripcion: tarea.descripcion,
+        completada: tarea.completada,
+        usuarioo: tarea.usuarioo?.idUsuario
+      });
     } else {
-      this.tareaForm.reset({ Completada: false }); // Inicializa 'Completada' como false
+      this.tareaForm.reset({ completada: false });
     }
   }
 
   toggleCompletada(tarea: any) {
     tarea.Completada = !tarea.Completada; // Cambia el estado de completada
-    this.tareaService.updateTarea(tarea.IdTarea, tarea).subscribe(() => this.loadTareas());
+    this.tareaService.finishTarea(tarea.idTarea).subscribe(() => this.loadTareas());
   }
 
   saveTarea() {
-    console.log(this.tareaForm.value);
     if (this.tareaForm.valid) {
       const tareaData = this.tareaForm.value;
-  
-      // Verifica si es una tarea existente (si tiene un IdTarea) o una nueva
-      if (tareaData.IdTarea) {
-        // Actualizar tarea existente
-        this.tareaService.updateTarea(tareaData.IdTarea, {
+    
+      if (tareaData.idTarea) {
+        // Si existe idTarea, se actualiza
+        this.tareaService.updateTarea(tareaData.idTarea, {
           tarea: tareaData.tarea,
           descripcion: tareaData.descripcion,
-          idUsuario: tareaData.usuarioo?.idUsuario,  // ID del usuario para la actualización
-          completada: tareaData.completada  // Si es un campo en el backend
-        }).subscribe(() => this.loadTareas());
+        }).subscribe(() => {
+          this.loadTareas();
+          this.displayDialog = false;
+        });
       } else {
-        // Crear nueva tarea
+        // Si no existe idTarea, se crea una nueva
         this.tareaService.createTarea({
           tarea: tareaData.tarea,
           descripcion: tareaData.descripcion,
-          idUsuario: tareaData.usuarioo?.idUsuario
-        }).subscribe(() => this.loadTareas());
+          idUsuario: tareaData.usuarioo?.idUsuario || 0
+        }).subscribe(() => {
+          this.loadTareas();
+          this.displayDialog = false;
+        });
       }
-  
-      this.displayDialog = false;
     }
   }
-
+  
   deleteTarea(id: number) {
     this.tareaService.deleteTarea(id).subscribe(() => this.loadTareas());
   }

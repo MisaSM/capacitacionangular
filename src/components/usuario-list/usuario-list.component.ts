@@ -6,7 +6,6 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Button, ButtonModule } from 'primeng/button';
-import { UserModel } from '../../models/user/user.model';
 @Component({
   selector: 'app-usuario-list',
   standalone: true,
@@ -43,17 +42,19 @@ export class UsuarioListComponent implements OnInit {
   }
 
   loadUsuarios() {
+    
     this.usuarioService.getUsuarios().subscribe((data) => {
       this.usuarios = data;
+      console.log(this.usuarios)
     });
   }
 
   openDialog(usuario?: any) {
     console.log(usuario);
     this.displayDialog = true;
-    if (usuario.idUsuario) {
+    if (usuario?.idUsuario) {
       this.usuarioForm.patchValue({
-        idUser: usuario.idUsuario,
+        idUsuario: usuario.idUsuario, // Cambiado de idUser a idUsuario
         names: usuario.nombres,
         userName: usuario.usuario,
         password: ''

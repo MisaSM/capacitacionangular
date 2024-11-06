@@ -22,8 +22,8 @@
                 <td>{{ tarea.descripcion }}</td>
                 <td class="text-center">
                     <button pButton type="button" 
-                            [label]="tarea.Completada ? 'Sí' : 'No'" 
-                            [class]="tarea.Completada ? 'btn btn-success' : 'btn btn-secondary'" 
+                            [label]="tarea.completada ? 'Sí' : 'No'" 
+                            [class]="tarea.completada ? 'btn btn-success' : 'btn btn-secondary'" 
                             (click)="toggleCompletada(tarea)">
                     </button>
                 </td>
@@ -49,7 +49,7 @@
           <label for="descripcion" class="form-label">Descripción</label>
           <input id="descripcion" pInputText formControlName="descripcion" class="form-control" />
       </div>
-      <div class="mb-3">
+      <div class="mb-3" [hidden]="isEditing">
           <label for="usuario" class="form-label me-3">Usuario</label>
           <p-dropdown 
               id="usuario" 

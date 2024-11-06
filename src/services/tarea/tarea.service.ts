@@ -6,8 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TareaService {
-  private apiUrl = 'http://localhost:44323/api/Tarea';
-
+  private apiUrl = 'https://localhost:44323/api/Tarea';
   constructor(private http: HttpClient) {}
 
   getTareas(): Observable<any> {
@@ -28,5 +27,9 @@ export class TareaService {
 
   deleteTarea(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  finishTarea(id: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/ToggleStatus/${id}`, {});
   }
 }
