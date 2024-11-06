@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2>Usuarios</h2>
-      <button pButton type="button" label="Nuevo Usuario" icon="pi pi-plus" class="btn btn-primary" (click)="openDialog()"></button>
+      <button pButton type="button" label="Nuevo Usuario" icon="pi pi-plus" class="btn btn-primary" (click)="openDialog()">Nuevo Usuario</button>
     </div>
   
     <!-- Tabla de Usuarios -->
@@ -40,8 +40,8 @@
         <input id="email" pInputText formControlName="email" class="form-control" />
       </div>
       <div class="d-flex justify-content-end">
-        <button pButton type="button" label="Cancelar" class="btn btn-secondary me-2" (click)="displayDialog=false"></button>
-        <button pButton type="submit" label="Guardar" class="btn btn-primary" [disabled]="!usuarioForm.valid"></button>
+        <button pButton type="button" label="Cancelar" class="btn btn-secondary me-2" (click)="displayDialog=false">Cancelar</button>
+        <button pButton type="submit" label="Guardar" class="btn btn-primary" [disabled]="!usuarioForm.valid">Crear</button>
       </div>
     </form>
   </p-dialog>
