@@ -1,0 +1,48 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Tareas</h2>
+      <button pButton type="button" label="Nueva Tarea" icon="pi pi-plus" class="btn btn-primary" (click)="openDialog()"></button>
+    </div>
+  
+    <!-- Tabla de Tareas -->
+    <div class="table-responsive">
+      <p-table [value]="tareas" class="table table-striped table-hover">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Tarea</th>
+            <th>Descripción</th>
+            <th class="text-center">Id Usuario</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tarea>
+          <tr [@fadeInOut]>
+            <td>{{ tarea.tarea }}</td>
+            <td>{{ tarea.descripcion }}</td>
+            <td class="text-center">
+              <button pButton type="button" icon="pi pi-pencil" class="btn btn-sm btn-warning me-2" (click)="openDialog(tarea)" label="Editar"></button>
+              <button pButton type="button" icon="pi pi-trash" class="btn btn-sm btn-danger" (click)="deleteTarea(tarea.id)" label="Eliminar"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  
+  <!-- Modal de Tarea (PrimeNG) -->
+  <p-dialog header="Tareas" [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
+    <form [formGroup]="tareaForm" (ngSubmit)="saveTarea()">
+      <div class="mb-3">
+        <label for="titulo" class="form-label">Tarea</label>
+        <input id="titulo" pInputText formControlName="titulo" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <input id="descripcion" pInputText formControlName="descripcion" class="form-control" />
+      </div>
+      <div class="d-flex justify-content-end">
+        <button pButton type="button" label="Cancelar" class="btn btn-secondary me-2" (click)="displayDialog=false"></button>
+        <button pButton type="submit" label="Guardar" class="btn btn-primary" [disabled]="!tareaForm.valid"></button>
+      </div>
+    </form>
+  </p-dialog>
+  
